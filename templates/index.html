@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneumonia Image Recognition</title>
+</head>
+<body>
+    <h1>Pneumonia Image Recognition</h1>
+    <h2>Upload an X-Ray Image</h2>
+
+    <!-- 上传图片表单 -->
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <input type="submit" value="Upload">
+    </form>
+
+    {% if filename %}
+        <h3>Uploaded Image:</h3>
+        <img src="{{ url_for('static', filename='uploaded/' + filename) }}" width="300"><br>
+        <h3>Predicted Class: {{ class_label }}</h3>
+        <h3>Denoised Image:</h3>
+        <img src="{{ url_for('static', filename='results/denoised.png') }}" width="300">
+    {% endif %}
+</body>
+</html>
