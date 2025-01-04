@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torchvision import transforms, datasets
 import torchmetrics
@@ -89,7 +87,11 @@ without_noise_test_accuracy = without_noise_test(without_noise_test_dataloader, 
 print(f"Without Noise Test Accuracy: {100*float(without_noise_test_accuracy):.2f}%")
 
 # 去噪结果可视化
-clean_img, _ = without_noise_test_dataset[0]  # 获取一个无噪声样本
+clean_img, _ = without_noise_test_dataset[2]  # 获取一个无噪声样本
 clean_img = clean_img.to(device)
 noisy_img = add_noise(clean_img, noise_factor=0.5)  # 对原始图像加噪
-plot_denoising(autoencoder, noisy_img, clean_img)
+for i in range(5):
+    model_name = 'Trained_Model/autoencoder_' + str(i) + '.pth'
+    autoencoder = Autoencoder().to(device)
+    autoencoder.load_state_dict(torch.load(model_name, weights_only=False))
+    plot_denoising(autoencoder, noisy_img, clean_img)

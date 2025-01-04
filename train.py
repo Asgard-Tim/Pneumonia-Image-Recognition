@@ -1,12 +1,11 @@
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import MultipleLocator
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torchvision import transforms, datasets
 from tqdm import tqdm
 import torchmetrics
+from matplotlib.pyplot import MultipleLocator
 from model import Autoencoder, CNN
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -56,6 +55,8 @@ def train_autoencoder_process(train_dataloader, autoencoder_model):
         epoch_avg_loss = loss_epoch / len(train_dataloader)
         print("[Autoencoder] Epoch:", epoch + 1, "--Loss:", epoch_avg_loss)
         loss.append(epoch_avg_loss)
+        if epoch % 10 == 0:
+            torch.save(autoencoder.state_dict(), 'Trained_Model/autoencoder_' + str(epoch // 10) + '.pth')
     return loss
 
 def train_cnn_process(train_dataloader, trained_autoencoder_model, cnn_model):
